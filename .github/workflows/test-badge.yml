@@ -35,11 +35,8 @@ jobs:
           echo "FAILURES=$failures" >> $GITHUB_ENV
           echo "ERRORS=$errors" >> $GITHUB_ENV
 
-      - name: Get branch name
-        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-
       - name: Set file name
-        run: echo "FILENAME=${{ env.BRANCH_NAME }}-test-results.json" >> $GITHUB_ENV
+        run: echo "FILENAME=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-')-test-results.json" >> $GITHUB_ENV
 
       - name: Prepare Content
         uses: actions/github-script@v5
