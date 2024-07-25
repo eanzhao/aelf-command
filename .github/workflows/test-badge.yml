@@ -31,15 +31,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xmlstarlet
 
-      - name: Extract Test Counts
-        id: test_counts
+      - name: Extract test counts
         run: |
-          tests=$(xmlstarlet sel -t -v "testsuites/@tests" "jest-report.xml")
-          failures=$(xmlstarlet sel -t -v "testsuites/@failures" "jest-report.xml")
-          errors=$(xmlstarlet sel -t -v "testsuites/@errors" "jest-report.xml")
-          echo "TESTS=$tests" >> $GITHUB_ENV
-          echo "FAILURES=$failures" >> $GITHUB_ENV
-          echo "ERRORS=$errors" >> $GITHUB_ENV
+          echo "TESTS=$(xmlstarlet sel -t -v "testsuites/@tests" "jest-report.xml")" >> $GITHUB_ENV
+          echo "FAILURES=$(xmlstarlet sel -t -v "testsuites/@failures" "jest-report.xml")" >> $GITHUB_ENV
+          echo "ERRORS=$(xmlstarlet sel -t -v "testsuites/@errors" "jest-report.xml")" >> $GITHUB_ENV
 
       - name: Set file name
         run: echo "FILENAME=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-')-test-results.json" >> $GITHUB_ENV
