@@ -1,13 +1,14 @@
 name: Test Badge
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
       - dev
       - master
       - feature/badge
-  permissions:
-    contents: write
 
 env:
     BRANCH_NAME: "feature/use-github-actions"
