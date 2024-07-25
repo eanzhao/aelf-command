@@ -6,6 +6,11 @@ on:
       - dev
       - master
       - feature/badge
+  permission:
+    contents: write
+
+env:
+    BRANCH_NAME: "feature/use-github-actions"
 
 jobs:
   test:
@@ -63,7 +68,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 path: "${{ env.FILENAME }}",
-                ref: 'feature/use-github-actions'
+                ref: "${{ env.BRANCH_NAME }}",
               });
               fileExists = !!data;
             } catch (error) {
@@ -80,7 +85,7 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const filePath = path.join(process.env.GITHUB_WORKSPACE, ${{ env.FILENAME }});
+            const filePath = path.join(process.env.GITHUB_WORKSPACE, "${{ env.FILENAME }}");
             const fileContent = fs.readFileSync(filePath, 'utf8');
 
             const params = {
@@ -89,7 +94,7 @@ jobs:
               path: "${{ env.FILENAME }}",
               message: `Update ${{ env.FILENAME }}`,
               content: Buffer.from(fileContent).toString('base64'),
-              branch: 'feature/use-github-actions'
+              branch: "${{ env.BRANCH_NAME }}"
             };
 
             if (${{ env.FILE_EXISTS }}) {
@@ -97,9 +102,10 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 path: "${{ env.FILENAME }}",
-                ref: 'feature/use-github-actions'
+                ref: "${{ env.BRANCH_NAME }}"
               });
               params.sha = data.sha;
             }
 
             await github.rest.repos.createOrUpdateFileContents(params);
+
