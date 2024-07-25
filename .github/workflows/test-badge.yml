@@ -6,7 +6,7 @@ on:
       - dev
       - master
       - feature/badge
-  permission:
+  permissions:
     contents: write
 
 env:
